@@ -1,0 +1,24 @@
+<ng-template #content let-modal>
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-title">Удаление профиля</h4>
+        <button type="button" class="btn-close" aria-label="Close button" aria-describedby="modal-title" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+
+    <div class="modal-body">
+        <p><strong>Вы уверены что хотите удалить сотрудника <span class="text-primary">"{{ employee.fullName }}"</span> ?</strong></p>
+        <p>Вся информация будет безвозвратна утеряна
+        <span class="text-danger">Операцию нельзя отменить.</span>
+        </p>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Отмена</button>
+        <button type="button" ngbAutofocus class="btn btn-danger" (click)="modal.close('ok')">Ок</button>
+    </div>
+    
+</ng-template>
+  
+<button class="edit btn-danger btn-sm btn" type="button" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"  (click)="open(content)" >
+    Удалить
+</button>

@@ -1,0 +1,32 @@
+<div class="container mt-5">
+    <div class="d-flex flex-row-reverse bd-highlight">
+      <app-employee-create-form (userCreated)="updateEmpolyees()"></app-employee-create-form>
+    </div>
+    <h2 class="mb-3 text-center">Сотрудники</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col" sortable="department" (sort)="onSort($event)">Отдел</th>
+          <th scope="col" sortable="fullName" (sort)="onSort($event)">ФИО</th>
+          <th scope="col" sortable="birthDate" (sort)="onSort($event)">Дата рождения</th>
+          <th scope="col" sortable="hireTime" (sort)="onSort($event)">Дата найма</th>
+          <th scope="col" sortable="salary" (sort)="onSort($event)">З/П (рублей в месяц)</th>
+          <th scope="col">Действие</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let employee of Employees">
+          <td scope="row">{{ employee.department }}</td>
+          <td scope="row">{{ employee.fullName }} </td>
+          <td scope="row">{{ employee.birthDate | date }}</td>
+          <td scope="row">{{ employee.hireTime | date }}</td>
+          <td scope="row">{{ employee.salary | number }}</td>
+          <td>
+            <app-employee-delete-confirm [employee]="employee" (employeeDelete)="updateEmpolyees()"></app-employee-delete-confirm>
+            &nbsp;
+            <app-employee-update-form [employee]="employee"></app-employee-update-form>            
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

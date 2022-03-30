@@ -1,0 +1,74 @@
+<ng-template #content let-modal>
+
+    <form (ngSubmit)="onSubmit()" [formGroup]="employeeForm">
+  
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Изменить сотрудника</h5>
+        <button aria-label="Close" (click)="modal.dismiss()" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+      </div>
+  
+      <div class="modal-body">
+  
+        <div class="mb-3">
+          <label class="form-label" for="fullName">
+            Полное имя
+          </label>
+          <input class="form-control" formControlName="fullName" id="fullName" type="text" required>
+        </div>
+  
+        <div class="mb-3">
+          <label class="form-label" for="department">
+            Отдел
+          </label>
+          <input class="form-control" formControlName="department" id="department" type="text" required >
+        </div>
+  
+        <div class="mb-3">
+          <label class="form-label">
+            Дата рождения
+          </label>
+  
+          <div class="input-group">
+  
+            <input #d="ngbDatepicker" class="form-control" formControlName="birthDate"
+                   name="birthDatePicker" ngbDatepicker placeholder="год-месяц-число" required="true" [valueAsDate]="employee.birthDate">
+            <button (click)="d.toggle()" class="btn btn-outline-secondary calendar" type="button"></button>
+          </div>
+  
+        </div>
+  
+        <div class="mb-3">
+          <label class="form-label">
+            Дата найма
+          </label>
+  
+          <div class="input-group">
+            <input #s="ngbDatepicker" class="form-control" formControlName="hireDate"
+                   name="hireDatePicker" ngbDatepicker placeholder="год-месяц-число" required>
+            <button (click)="s.toggle()" class="btn btn-outline-secondary calendar" type="button"></button>
+          </div>
+        </div>
+  
+        <div class="mb-3">
+          <label class="form-label" for="salary">
+            Доход
+          </label>
+          <input class="form-control" formControlName="salary" id="salary" type="text" required>
+        </div>
+  
+  
+      </div>
+  
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Закрыть</button>
+        <button class="btn btn-primary" type="submit" (click)="modal.close()">Сохранить изменения</button>
+      </div>
+  
+    </form>
+    
+  </ng-template>
+  
+  <button type="button" class="edit btn-success btn-sm btn" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="open(content)">
+    Поменять
+  </button>
+  
