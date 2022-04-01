@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Observable} from 'rxjs';
 import {Employee, EmployeeDto} from "../../interfaces/Employee";
 
 
@@ -9,27 +9,26 @@ import {Employee, EmployeeDto} from "../../interfaces/Employee";
 })
 export class CrudService {
 
-  constructor(private httpClient: HttpClient) { }
-
   headersJson = new HttpHeaders()
     .set('content-type', 'application/json')
     .set('Access-Control-Allow-Origin', '*')
-
   endpoint = 'https://localhost:5001';
-  
+
+  constructor(private httpClient: HttpClient) {
+  }
 
   getEmployees(): Observable<Employee[]> {
     return this.httpClient.get<Employee[]>(this.endpoint + "/employees/getall")
   }
 
   createEmployee(employee: EmployeeDto): Observable<Employee> {
-    return this.httpClient.post<Employee>(this.endpoint + "/employees/create", 
-    employee, { 'headers': this.headersJson })
+    return this.httpClient.post<Employee>(this.endpoint + "/employees/create",
+      employee, {'headers': this.headersJson})
   }
 
   updateEmployee(employee: Employee) {
     return this.httpClient.put<Employee>(this.endpoint + "/employees/update",
-    employee, { "headers": this.headersJson })
+      employee, {"headers": this.headersJson})
   }
 
 

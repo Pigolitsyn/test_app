@@ -19,22 +19,20 @@ namespace test_app
 
         private IConfiguration Configuration { get; }
 
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-
-            services.AddDbContext<ApplicationContext>(options => options.UseSqlServer("Data Source=localhost,1433;Database=testdb;Integrated Security=false;User ID=sa;Password=35H~~31z=B;"));
+            services.AddDbContext<ApplicationContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("sql-server")));
             services.AddControllersWithViews();
             services.AddTransient<EmployeesService>();
             services.AddTransient<ValidationService>();
             // In production, the Angular files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "Frontend/dist";
-            });
+            services.AddSpaStaticFiles(configuration => { configuration.RootPath = "Frontend/dist"; });
         }
-        
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseStaticFiles();
@@ -43,20 +41,17 @@ namespace test_app
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
+                    "default",
+                    "{controller}/{action=Index}/{id?}");
             });
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "Frontend";
 
-                if (env.IsDevelopment())
-                {
-                    spa.UseAngularCliServer(npmScript: "start");
-                }
+                if (env.IsDevelopment()) spa.UseAngularCliServer("start");
             });
-            
-            
+
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -67,8 +62,6 @@ namespace test_app
                 app.UseHsts();
                 app.UseSpaStaticFiles();
             }
-            
-
         }
     }
 }

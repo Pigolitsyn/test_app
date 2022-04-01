@@ -1,7 +1,16 @@
-import {Component, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { CrudService } from '../../services/employees/crud.service';
-import { Employee } from "../../interfaces/Employee";
-import { SortableDirective, SortEvent } from './sortable.directive';
+import {
+  Component,
+  ComponentFactoryResolver,
+  ElementRef,
+  OnInit,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+  ViewContainerRef
+} from '@angular/core';
+import {CrudService} from '../../services/employees/crud.service';
+import {Employee} from "../../interfaces/Employee";
+import {SortableDirective, SortEvent} from './sortable.directive';
 
 
 const compare = (v1: string | number, v2: string | number) => v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
@@ -11,17 +20,24 @@ const compare = (v1: string | number, v2: string | number) => v1 < v2 ? -1 : v1 
   templateUrl: './employees-table.component.html',
 })
 export class EmployeesTableComponent implements OnInit {
+  @ViewChild("alertPlaceholder") alertPlaceholder! : ViewContainerRef;
 
   @ViewChildren(SortableDirective) headers!: QueryList<SortableDirective>;
-
-  constructor(public crudService: CrudService) {}
   Employees: Employee[] = [];
+  employees = this.Employees
 
-  ngOnInit(): void {
-      this.updateEmpolyees();
+  constructor(public crudService: CrudService) {
   }
 
-  updateEmpolyees() {
+  ngOnInit(): void {
+    this.updateEmployees();
+  }
+
+  createAlert(message: string, type: string) {
+
+  }
+
+  updateEmployees() {
     return this.crudService.getEmployees().subscribe((res) => {
       console.log(res)
       this.Employees = res;
@@ -36,7 +52,7 @@ export class EmployeesTableComponent implements OnInit {
     })
 
     if (direction === '' || column === '') {
-      
+
     } else {
       this.Employees = [...this.Employees].sort((a, b) => {
         const res = compare(a[column], b[column]);
@@ -45,7 +61,5 @@ export class EmployeesTableComponent implements OnInit {
     }
   }
 
-  employees = this.Employees
 
-  
 }

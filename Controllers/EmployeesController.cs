@@ -11,8 +11,8 @@ namespace test_app.Controllers
     [ApiController]
     public class EmployeesController : ControllerBase
     {
-        private readonly EmployeesService _service;
         private readonly ILogger<EmployeesController> _logger;
+        private readonly EmployeesService _service;
 
         public EmployeesController(ILogger<EmployeesController> logger, EmployeesService service)
         {
@@ -47,7 +47,7 @@ namespace test_app.Controllers
         [HttpPut]
         public async Task<Employee> Update(Employee employee)
         {
-            _logger.Log(LogLevel.Information, "Endpoint: employees/create/");
+            _logger.Log(LogLevel.Information, "Endpoint: employees/update/");
             return await _service.Update(employee);
         }
 

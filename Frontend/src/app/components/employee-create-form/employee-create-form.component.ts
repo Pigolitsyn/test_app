@@ -47,7 +47,7 @@ export class EmployeeCreateFormComponent {
   onSubmit() {
     let employee: EmployeeDto = {
       birthDate: `${this.employeeForm.value.birthDate.year}-${this.employeeForm.value.birthDate.month}-${this.employeeForm.value.birthDate.day}`,
-      hireTime: `${this.employeeForm.value.hireDate.year}-${this.employeeForm.value.hireDate.month}-${this.employeeForm.value.hireDate.day}`,
+      hireDate: `${this.employeeForm.value.hireDate.year}-${this.employeeForm.value.hireDate.month}-${this.employeeForm.value.hireDate.day}`,
       department: this.employeeForm.value.department,
       fullName: this.employeeForm.value.fullName,
       salary: parseInt(this.employeeForm.value.salary),

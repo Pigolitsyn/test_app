@@ -1,25 +1,25 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
-import { HttpClientModule } from '@angular/common/http';
+import {HttpClientModule} from '@angular/common/http';
 
-import { HeaderComponent } from './components/header/header.component';
-import { AppComponent } from './app.component';
-import { EmployeesTableComponent } from './components/empoloyees-table/employees-table.component';
-import { HomeComponent } from './components/home/home.component';
-import { RouterModule, Routes } from '@angular/router';
-import { EmployeeCreateFormComponent } from './components/employee-create-form/employee-create-form.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { SortableDirective } from './components/empoloyees-table/sortable.directive';
+import {HeaderComponent} from './components/header/header.component';
+import {AppComponent} from './app.component';
+import {EmployeesTableComponent} from './components/empoloyees-table/employees-table.component';
+import {HomeComponent} from './components/home/home.component';
+import {RouterModule, Routes} from '@angular/router';
+import {EmployeeCreateFormComponent} from './components/employee-create-form/employee-create-form.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {SortableDirective} from './components/empoloyees-table/sortable.directive';
+import {EmployeeDeleteConfirmComponent} from './components/employee-delete-confirm/employee-delete-confirm.component';
+import {EmployeeUpdateFormComponent} from './components/employee-update-form/employee-update-form.component';
 
 
 const routes: Routes = [
-  { path: "employees", component: EmployeesTableComponent },
-  { path: "home", component: HomeComponent }
+  {path: "employees", component: EmployeesTableComponent},
+  {path: "home", component: HomeComponent}
 ];
-import { EmployeeDeleteConfirmComponent } from './components/employee-delete-confirm/employee-delete-confirm.component';
-import { EmployeeUpdateFormComponent } from './components/employee-update-form/employee-update-form.component';
 
 
 @NgModule({
@@ -34,7 +34,7 @@ import { EmployeeUpdateFormComponent } from './components/employee-update-form/e
     SortableDirective,
   ],
   imports: [
-    BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+    BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
     HttpClientModule,
     FormsModule,
     RouterModule.forRoot(routes),
@@ -46,4 +46,5 @@ import { EmployeeUpdateFormComponent } from './components/employee-update-form/e
   bootstrap: [AppComponent],
 })
 
-export class AppModule { }
+export class AppModule {
+}

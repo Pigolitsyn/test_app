@@ -1,74 +1,76 @@
 <ng-template #content let-modal>
 
-    <form (ngSubmit)="onSubmit()" [formGroup]="employeeForm">
-  
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Изменить сотрудника</h5>
-        <button aria-label="Close" (click)="modal.dismiss()" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+  <form (ngSubmit)="onSubmit()" [formGroup]="employeeForm">
+
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLabel">Изменить сотрудника</h5>
+
+      <button (click)="modal.dismiss()" aria-label="Close" class="btn-close" data-bs-dismiss="modal"
+              type="button"></button>
+    </div>
+
+    <div class="modal-body">
+      <p>Введите параметры которые хотите изменить</p>
+      <div class="mb-3">
+        <label class="form-label" for="fullName">
+          Текущее имя: {{ employee.fullName }}
+        </label>
+        <input class="form-control" formControlName="fullName" id="fullName" required type="text">
       </div>
-  
-      <div class="modal-body">
-  
-        <div class="mb-3">
-          <label class="form-label" for="fullName">
-            Полное имя
-          </label>
-          <input class="form-control" formControlName="fullName" id="fullName" type="text" required>
-        </div>
-  
-        <div class="mb-3">
-          <label class="form-label" for="department">
-            Отдел
-          </label>
-          <input class="form-control" formControlName="department" id="department" type="text" required >
-        </div>
-  
-        <div class="mb-3">
-          <label class="form-label">
-            Дата рождения
-          </label>
-  
-          <div class="input-group">
-  
-            <input #d="ngbDatepicker" class="form-control" formControlName="birthDate"
-                   name="birthDatePicker" ngbDatepicker placeholder="год-месяц-число" required="true" [valueAsDate]="employee.birthDate">
-            <button (click)="d.toggle()" class="btn btn-outline-secondary calendar" type="button"></button>
-          </div>
-  
-        </div>
-  
-        <div class="mb-3">
-          <label class="form-label">
-            Дата найма
-          </label>
-  
-          <div class="input-group">
-            <input #s="ngbDatepicker" class="form-control" formControlName="hireDate"
-                   name="hireDatePicker" ngbDatepicker placeholder="год-месяц-число" required>
-            <button (click)="s.toggle()" class="btn btn-outline-secondary calendar" type="button"></button>
-          </div>
-        </div>
-  
-        <div class="mb-3">
-          <label class="form-label" for="salary">
-            Доход
-          </label>
-          <input class="form-control" formControlName="salary" id="salary" type="text" required>
-        </div>
-  
-  
+
+      <div class="mb-3">
+        <label class="form-label" for="department">
+          Текущий отдел: {{ employee.department }}
+        </label>
+        <input class="form-control" formControlName="department" id="department" required type="text">
       </div>
-  
-      <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Закрыть</button>
-        <button class="btn btn-primary" type="submit" (click)="modal.close()">Сохранить изменения</button>
+
+      <div class="mb-3">
+        <label class="form-label">
+          Текущая дата рождения: {{ employee.birthDate | date }}
+        </label>
+        <div class="input-group">
+
+          <input #d="ngbDatepicker" class="form-control" formControlName="birthDate"
+                 name="birthDatePicker" ngbDatepicker placeholder="год-месяц-число" required="true">
+          <button (click)="d.toggle()" class="btn btn-outline-secondary calendar" type="button"></button>
+        </div>
+
       </div>
-  
-    </form>
-    
-  </ng-template>
-  
-  <button type="button" class="edit btn-success btn-sm btn" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="open(content)">
-    Поменять
-  </button>
-  
+
+      <div class="mb-3">
+
+        <label class="form-label">
+          Текущая дата найма: {{ employee.hireDate| date }}
+        </label>
+
+        <div class="input-group">
+          <input #s="ngbDatepicker" class="form-control" formControlName="hireDate"
+                 name="hireDatePicker" ngbDatepicker placeholder="год-месяц-число" required>
+          <button (click)="s.toggle()" class="btn btn-outline-secondary calendar" type="button"></button>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="salary">
+          Текущий доход: {{ employee.salary }}
+        </label>
+        <input class="form-control" formControlName="salary" id="salary" required type="text">
+      </div>
+
+
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Закрыть</button>
+      <button (click)="modal.close()" class="btn btn-primary" type="submit">Сохранить изменения</button>
+    </div>
+
+  </form>
+
+</ng-template>
+
+<button (click)="open(content)" class="edit btn-success btn-sm btn" data-bs-target="#exampleModal" data-bs-toggle="modal"
+        type="button">
+  Поменять
+</button>

@@ -1,9 +1,9 @@
 import {Directive, EventEmitter, Input, Output} from '@angular/core';
-import { Employee } from "src/app/interfaces/Employee";
+import {Employee} from "src/app/interfaces/Employee";
 
 export type SortColumn = keyof Employee | '';
 export type SortDirection = 'asc' | 'desc' | '';
-const rotate: {[key: string]: SortDirection} = { 'asc': 'desc', 'desc': '', '': 'asc' };
+const rotate: { [key: string]: SortDirection } = {'asc': 'desc', 'desc': 'asc', '': 'asc'};
 
 export interface SortEvent {
   column: SortColumn;
@@ -18,7 +18,7 @@ export interface SortEvent {
     '(click)': 'rotate()'
   },
 
-}) 
+})
 export class SortableDirective {
 
   @Input() sortable: SortColumn = '';
