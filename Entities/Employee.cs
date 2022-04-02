@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.VisualBasic;
 
@@ -7,9 +8,9 @@ namespace test_app.Entities
     {
         public int Id { get; set; }
         [Required]
-        public string BirthDate { get; set; }
+        public DateTime BirthDate { get; set; }
         [Required]
-        public string HireDate { get; set; }
+        public DateTime HireDate { get; set; }
         [Required]
         public string FullName { get; set; }
         [Required]

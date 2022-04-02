@@ -1,61 +1,53 @@
 import {
   Component,
-  OnInit,
   QueryList,
-  ViewChild,
   ViewChildren,
-  ViewContainerRef
 } from '@angular/core';
 import {CrudService} from '../../services/employees/crud.service';
 import {Employee} from "../../interfaces";
 import {SortableDirective, SortEvent} from './sortable.directive';
 import {Observable} from "rxjs";
 import {FormControl, FormGroup} from "@angular/forms";
+import {NgbDate} from "@ng-bootstrap/ng-bootstrap";
 
 
 @Component({
   selector: 'app-employees-table',
   templateUrl: './employees-table.component.html',
 })
-export class EmployeesTableComponent implements OnInit {
+export class EmployeesTableComponent  {
 
-  constructor(public crudService: CrudService) {
-    this.form.valueChanges.subscribe(text => {
-      this.Employees$.subscribe(employees => {
-        this.Employees = employees.filter(
-          employee => employee.fullName.toLowerCase().includes(text.fullName.toLowerCase())
-          && employee.department.toLowerCase().includes(text.department.toLowerCase())
-          && employee.salary >= text.salaryFrom && employee.salary <= text.salaryTo)
-      })
-    })
-  }
-
-  Employees$!: Observable<Employee[]>;
-  Employees: Employee[] = [];
-  MaxSalary: number = 1000000;
-
+  @ViewChildren(SortableDirective) headers!: QueryList<SortableDirective>;
   form = new FormGroup({
     fullName: new FormControl(''),
     department: new FormControl(''),
     salaryFrom: new FormControl(''),
-    salaryTo: new FormControl(this.MaxSalary),
+    salaryTo: new FormControl(100000000),
   })
+  Employees$!: Observable<Employee[]>;
+  Employees: Employee[] = [];
 
-  @ViewChild('alertPlaceholder', { read: ViewContainerRef }) alertPlaceholder!: ViewContainerRef;
-  @ViewChildren(SortableDirective) headers!: QueryList<SortableDirective>;
 
-
-  ngOnInit(): void {
+  constructor(public crudService: CrudService) {
     this.updateEmployees();
+    // filtration search form
+    this.form.valueChanges.subscribe(text => {
+      this.Employees$.subscribe(employees => {
+        this.Employees = employees.filter(
+          employee => employee.fullName.toLowerCase().includes(text.fullName.toLowerCase())
+            && employee.department.toLowerCase().includes(text.department.toLowerCase())
+            && employee.salary >= text.salaryFrom && employee.salary <= text.salaryTo)
+      })
+    })
   }
 
   updateEmployees(orderBy?: string, direction?: string) {
     this.Employees$ = this.crudService.getEmployees(orderBy, direction)
     this.Employees$.subscribe(employees => {
       this.Employees = employees;
-      this.MaxSalary = Math.max(...employees.map(employee => employee.salary))
     })
   }
+
   onSort({column, direction}: SortEvent) {
     this.headers.forEach(header => {
       if (header.sortable !== column) {
@@ -69,12 +61,7 @@ export class EmployeesTableComponent implements OnInit {
     }
   }
 
-
-
-
-/*  createMessage() {
-    const message = this.alertPlaceholder.createComponent(ErrorWasOccuredComponent,{});
-    setTimeout(() => { message.destroy() }, 2000)
-  }*/
-
+  print(date: NgbDate[]) {
+    console.log(date)
+  }
 }

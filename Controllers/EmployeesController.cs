@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -45,6 +46,22 @@ namespace test_app.Controllers
             }
         }
 
+        [HttpDelete]
+        [Route("[controller]/deleteOlder")]
+        public IActionResult DeleteOlderThan(int old)
+        {
+            try
+            {
+                _service.DeleteElderThan(old);
+                return Ok();
+            }
+            catch
+            {
+                return NotFound();
+            }
+            
+        }
+
         [Route("[controller]/create/")]
         [HttpPost]
         public async Task<IActionResult> Create(Employee employee)
@@ -74,6 +91,13 @@ namespace test_app.Controllers
         {
             _logger.Log(LogLevel.Information, "Endpoint: employees/delete/");
             return _service.Delete(id);
+        }
+
+        [Route("[controller]/makeallhappy")]
+        [HttpPost]
+        public void MakeAllHappy()
+        {
+            _service.MakeAllHappy();
         }
     }
 }

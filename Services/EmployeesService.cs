@@ -92,5 +92,23 @@ namespace test_app.Services
                 return "Not ok";
             }
         }
+
+        public void DeleteElderThan(int old)
+        {
+            Console.WriteLine("Service DeleteThanElder");
+            var employees = _db.Employees.Where(employee => (DateTime.Now.Year - employee.BirthDate.Year) > old);
+            _db.Employees.RemoveRange(employees);
+            _db.SaveChanges();
+        }
+
+        public void MakeAllHappy()
+        {
+            foreach (var employee in _db.Employees.Where(employee => employee.Salary < 15000))
+            {
+                employee.Salary = 15000;
+            }
+
+            _db.SaveChanges();
+        }
     }
 }

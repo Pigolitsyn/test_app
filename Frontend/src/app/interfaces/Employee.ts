@@ -5,7 +5,7 @@ export interface Employee extends EmployeeDto {
 export interface EmployeeDto {
   department: string,
   fullName: string,
-  birthDate: string,
-  hireDate: string,
+  birthDate: Date,
+  hireDate: Date,
   salary: number,
 }

@@ -14,9 +14,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {SortableDirective} from './components/empoloyees-table/sortable.directive';
 import {EmployeeDeleteConfirmComponent} from './components/employee-delete-confirm/employee-delete-confirm.component';
 import {EmployeeUpdateFormComponent} from './components/employee-update-form/employee-update-form.component';
-import { ErrorWasOccuredComponent } from './components/alerts/error-was-occured/error-was-occured.component';
 import { SearchFormComponent } from './components/search-form/search-form.component';
-
 
 const routes: Routes = [
   {path: "employees", component: EmployeesTableComponent},
@@ -34,7 +32,6 @@ const routes: Routes = [
     EmployeeDeleteConfirmComponent,
     EmployeeUpdateFormComponent,
     SortableDirective,
-    ErrorWasOccuredComponent,
     SearchFormComponent,
   ],
   imports: [

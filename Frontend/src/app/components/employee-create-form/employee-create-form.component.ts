@@ -46,12 +46,13 @@ export class EmployeeCreateFormComponent {
 
   onSubmit() {
     let employee: EmployeeDto = {
-      birthDate: `${this.employeeForm.value.birthDate.year}-${this.employeeForm.value.birthDate.month}-${this.employeeForm.value.birthDate.day}`,
-      hireDate: `${this.employeeForm.value.hireDate.year}-${this.employeeForm.value.hireDate.month}-${this.employeeForm.value.hireDate.day}`,
+      birthDate: new Date(this.employeeForm.value.birthDate.year, this.employeeForm.value.birthDate.month - 1, this.employeeForm.value.birthDate.day),
+      hireDate: new Date(this.employeeForm.value.hireDate.year, this.employeeForm.value.birthDate.month - 1, this.employeeForm.value.hireDate.day),
       department: this.employeeForm.value.department,
       fullName: this.employeeForm.value.fullName,
       salary: parseInt(this.employeeForm.value.salary),
     }
+    console.log(employee)
     this.crudService.createEmployee(employee).subscribe({next: (empl: any) => {
       console.log(empl)
       this.userCreated.emit();

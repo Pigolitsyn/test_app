@@ -51,6 +51,7 @@ export class SearchFormComponent {
       this.toDate = null;
       this.fromDate = date;
     }
+
   }
 
   isHovered(date: NgbDate) {

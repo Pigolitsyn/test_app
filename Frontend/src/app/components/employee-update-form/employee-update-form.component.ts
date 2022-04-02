@@ -11,8 +11,6 @@ import { dateToString } from "../../helpers/dateToString";
 })
 export class EmployeeUpdateFormComponent {
   @Input() employee!: Employee;
-
-
   employeeForm: any = {};
 
   constructor(
@@ -55,10 +53,10 @@ export class EmployeeUpdateFormComponent {
   onSubmit() {
 
     if (this.employeeForm.value.birthDate!.year) {
-      this.employee.birthDate = dateToString(this.employeeForm.value.birthDate);
+      this.employee.birthDate = new Date(this.employeeForm.value.birthDate.year, this.employeeForm.value.birthDate.month - 1, this.employeeForm.value.birthDate.day);
     }
     if (this.employeeForm.value.hireDate!.year) {
-      this.employee.hireDate = dateToString(this.employeeForm.value.hireDate);
+      this.employee.hireDate = new Date(this.employeeForm.value.hireDate.year, this.employeeForm.value.hireDate.month - 1, this.employeeForm.value.hireDate.day)
     }
     if (this.employeeForm.value.department) {
       this.employee.department = this.employeeForm.value.department
