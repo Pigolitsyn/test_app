@@ -43,4 +43,12 @@ export class CrudService {
       responseType: "text",
     });
   }
+
+  deleteOlder() {
+    return this.httpClient.delete(this.endpoint + "/employees/deleteOlder?old=70")
+  }
+
+  makeAllHappy() {
+    return this.httpClient.post(this.endpoint + "/employees/makeallhappy", null)
+  }
 }

@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -27,6 +26,7 @@ namespace test_app.Controllers
         [HttpGet]
         public List<Employee> GetAll(string? orderBy, string? direction)
         {
+            _logger.Log(LogLevel.Information, "Endpoint: employees/getall");
             return _service.ReadAll(orderBy, direction);
         }
 
@@ -42,7 +42,7 @@ namespace test_app.Controllers
             }
             catch (NullReferenceException exception)
             {
-                return NotFound();
+                return NotFound(exception.Message);
             }
         }
 
@@ -50,6 +50,7 @@ namespace test_app.Controllers
         [Route("[controller]/deleteOlder")]
         public IActionResult DeleteOlderThan(int old)
         {
+            _logger.Log(LogLevel.Information,  "Endpoint: employees/deleteOlder");
             try
             {
                 _service.DeleteElderThan(old);
@@ -59,7 +60,6 @@ namespace test_app.Controllers
             {
                 return NotFound();
             }
-            
         }
 
         [Route("[controller]/create/")]
@@ -79,11 +79,19 @@ namespace test_app.Controllers
 
         [Route("[controller]/update/")]
         [HttpPut]
-        public async Task<Employee> Update(Employee employee)
+        public async Task<IActionResult> Update(Employee employee)
         {
             _logger.Log(LogLevel.Information, "Endpoint: employees/update/");
-            return await _service.Update(employee);
+            try
+            {
+                return Ok(await _service.Update(employee));
+            }
+            catch (ValidationException exception)
+            {
+                return ValidationProblem(exception.Message);
+            }
         }
+
 
         [Route("[controller]/delete/")]
         [HttpPost]

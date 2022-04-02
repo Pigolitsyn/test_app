@@ -64,7 +64,7 @@ namespace test_app.Services
 
         public async Task<Employee> Update(Employee newEmployee)
         {
-            if (!_validationService.ValidateEmployee(newEmployee)) throw new Exception();
+            if (!_validationService.ValidateEmployee(newEmployee)) throw new ValidationException();
             Console.WriteLine(newEmployee);
             var employee = await _db.Employees.FindAsync(newEmployee.Id);
             employee.Department = newEmployee.Department;
