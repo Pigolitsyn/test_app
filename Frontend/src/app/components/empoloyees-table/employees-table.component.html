@@ -1,34 +1,64 @@
 <div class="container mt-5">
   <div #alertPlaceholder></div>
-  <div class="d-flex flex-row-reverse bd-highlight">
-    <app-employee-create-form (userCreated)="updateEmployees()"></app-employee-create-form>
+  <div class="row">
+    <div class="col-9">
+      <h2 class="text-center">Сотрудники</h2>
+      <table class="table">
+        <thead>
+        <tr>
+          <th (sort)="onSort($event)" scope="col" sortable="department">Отдел</th>
+          <th (sort)="onSort($event)" scope="col" sortable="fullName">ФИО</th>
+          <th (sort)="onSort($event)" scope="col" sortable="birthDate">Дата рождения</th>
+          <th (sort)="onSort($event)" scope="col" sortable="hireDate">Дата найма</th>
+          <th (sort)="onSort($event)" scope="col" sortable="salary">З/П</th>
+          <th scope="col">Действие</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let employee of Employees">
+          <td>{{ employee.department }}</td>
+          <td>{{ employee.fullName }} </td>
+          <td>{{ employee.birthDate | date }}</td>
+          <td>{{ employee.hireDate | date }}</td>
+          <td>{{ employee.salary | number }}</td>
+          <td>
+            <app-employee-delete-confirm (employeeDelete)="updateEmployees()"
+                                         [employee]="employee"></app-employee-delete-confirm>
+            &nbsp;
+            <app-employee-update-form [employee]="employee"></app-employee-update-form>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col mt-5">
+      <h4 class="mb-2">Поиск</h4>
+      <form class="form-group" [formGroup]="form">
+
+        <div class="form-floating mb-3">
+          <input type="text" class="form-control" id="floatingInput" formControlName="fullName">
+          <label>ФИО</label>
+        </div>
+
+        <div class="form-floating mb-3">
+          <input type="text" class="form-control" formControlName="department">
+          <label>Отдел</label>
+        </div>
+
+        <label>Заплата</label>
+        <div class="mb-3 row">
+          <div class="col">
+            <input type="text" class="form-control" formControlName="salaryFrom" placeholder="От">
+          </div>
+          <div class="col">
+            <input type="text" class="form-control" formControlName="salaryTo" placeholder="До">
+          </div>
+        </div>
+        <app-employee-create-form (userCreated)="updateEmployees()"></app-employee-create-form>
+
+      </form>
+    </div>
   </div>
-  <h2 class="mb-3 text-center">Сотрудники</h2>
-  <table class="table">
-    <thead>
-    <tr>
-      <th (sort)="onSort($event)" scope="col" sortable="department">Отдел</th>
-      <th (sort)="onSort($event)" scope="col" sortable="fullName">ФИО</th>
-      <th (sort)="onSort($event)" scope="col" sortable="birthDate">Дата рождения</th>
-      <th (sort)="onSort($event)" scope="col" sortable="hireDate">Дата найма</th>
-      <th (sort)="onSort($event)" scope="col" sortable="salary">З/П (рублей в месяц)</th>
-      <th scope="col">Действие</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let employee of Employees">
-      <td>{{ employee.department }}</td>
-      <td>{{ employee.fullName }} </td>
-      <td>{{ employee.birthDate | date }}</td>
-      <td>{{ employee.hireDate | date }}</td>
-      <td>{{ employee.salary | number }}</td>
-      <td>
-        <app-employee-delete-confirm (employeeDelete)="updateEmployees()"
-                                     [employee]="employee"></app-employee-delete-confirm>
-        &nbsp;
-        <app-employee-update-form [employee]="employee"></app-employee-update-form>
-      </td>
-    </tr>
-    </tbody>
-  </table>
 </div>
+

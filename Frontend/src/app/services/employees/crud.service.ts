@@ -17,8 +17,13 @@ export class CrudService {
   constructor(private httpClient: HttpClient) {
   }
 
-  getEmployees(): Observable<Employee[]> {
-    return this.httpClient.get<Employee[]>(this.endpoint + "/employees/getall")
+  getEmployees(orderBy?: string, direction?: string): Observable<Employee[]> {
+    let url = this.endpoint + "/employees/getall";
+
+    url += orderBy ? `?orderBy=${orderBy.toLowerCase()}` : '';
+    url += direction ? `&direction=${direction}` : '';
+    console.log(url)
+    return this.httpClient.get<Employee[]>(url)
   }
 
   createEmployee(employee: EmployeeDto): Observable<Employee> {

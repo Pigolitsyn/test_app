@@ -45,7 +45,7 @@ export class EmployeeUpdateFormComponent {
   }
 
   open(content: TemplateRef<any>) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', animation: true, backdrop: "static"}).result.then((result) => {
       if (result === 'ok') {
         this.onSubmit()
       }
@@ -71,10 +71,7 @@ export class EmployeeUpdateFormComponent {
     }
 
     this.crudService.updateEmployee(this.employee).subscribe({
-      next: (empl: any) => {
-        this.updateForm();
-        console.log(empl)
-      }, error: err => console.log(err)
+      next: () => this.updateForm(), error: err => console.log(err)
     });
   }
 }

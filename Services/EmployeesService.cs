@@ -1,6 +1,7 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -10,6 +11,7 @@ namespace test_app.Services
 {
     public class EmployeesService
     {
+        
         private readonly ApplicationContext _db;
         private readonly ILogger<EmployeesService> _logger;
         private readonly ValidationService _validationService;
@@ -24,10 +26,10 @@ namespace test_app.Services
 
         public async Task<Employee> Create(Employee employee)
         {
-            if (_validationService.ValidateEmployee(employee) == false) throw new Exception("Validation error");
+            if (_validationService.ValidateEmployee(employee) == false) throw new ValidationException();
             var response = _db.Employees.AddAsync(employee).Result.Entity;
             await _db.SaveChangesAsync();
-            _logger.Log(LogLevel.Information, $"user: {response} was created");
+            _logger.Log(LogLevel.Information, $"user: {response.FullName} was created");
             return response;
         }
 
@@ -36,18 +38,29 @@ namespace test_app.Services
             return await _db.Employees.FindAsync(id);
         }
 
-        public List<Employee> ReadAll(string? orderBy)
+        public List<Employee> ReadAll(string? orderBy, string? direction)
         {
-            return orderBy switch
+            return (orderBy,  direction) switch
             {
-                "department" => _db.Employees.OrderBy(employee => employee.Department).ToList(),
-                "fullname" => _db.Employees.OrderBy(employee => employee.FullName).ToList(),
-                "salary" => _db.Employees.OrderBy(employee => employee.Salary).ToList(),
-                "birthdate" => _db.Employees.OrderBy(employee => employee.BirthDate).ToList(),
-                "hiredate" => _db.Employees.OrderBy(employee => employee.HireDate).ToList(),
+                ("department", "desc") => _db.Employees.OrderByDescending(employee => employee.Department).ToList(),
+                ("department", _) => _db.Employees.OrderBy(employee => employee.Department).ToList(),
+                
+                ("fullname", "desc") => _db.Employees.OrderByDescending(employee => employee.FullName).ToList(),
+                ("fullname", _) => _db.Employees.OrderBy(employee => employee.FullName).ToList(),
+                
+                ("salary", "desc") => _db.Employees.OrderByDescending(employee => employee.Salary).ToList(),
+                ("salary", _) => _db.Employees.OrderBy(employee => employee.Salary).ToList(),
+                
+                ("birthdate", "desc") => _db.Employees.OrderByDescending(employee => employee.BirthDate).ToList(),
+                ("birthdate", _) => _db.Employees.OrderBy(employee => employee.BirthDate).ToList(),
+                
+                ("hiredate", "desc") => _db.Employees.OrderByDescending(employee => employee.HireDate).ToList(),
+                ("hiredate", _) => _db.Employees.OrderBy(employee => employee.HireDate).ToList(),
+                
                 _ => _db.Employees.ToList()
             };
         }
+
 
         public async Task<Employee> Update(Employee newEmployee)
         {
@@ -76,7 +89,6 @@ namespace test_app.Services
             catch (Exception error)
             {
                 _logger.Log(LogLevel.Critical, error.Message);
-                ;
                 return "Not ok";
             }
         }

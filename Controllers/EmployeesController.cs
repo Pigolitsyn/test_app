@@ -1,5 +1,7 @@
 ﻿#nullable enable
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -22,25 +24,40 @@ namespace test_app.Controllers
 
         [Route("[controller]/getAll/")]
         [HttpGet]
-        public List<Employee> GetAll(string? orderBy)
+        public List<Employee> GetAll(string? orderBy, string? direction)
         {
-            return _service.ReadAll(orderBy);
+            return _service.ReadAll(orderBy, direction);
         }
 
         [Route("[controller]/get/{id}")]
         [HttpGet]
-        public async Task<Employee> Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
             _logger.Log(LogLevel.Information, "Endpoint: employees/get/id");
-            return await _service.ReadOne(id);
+            try
+            {
+                var employee = await _service.ReadOne(id);
+                return Ok(employee);
+            }
+            catch (NullReferenceException exception)
+            {
+                return NotFound();
+            }
         }
 
         [Route("[controller]/create/")]
         [HttpPost]
-        public async Task<Employee> Create(Employee employee)
+        public async Task<IActionResult> Create(Employee employee)
         {
             _logger.Log(LogLevel.Information, "Endpoint: employees/create/");
-            return await _service.Create(employee);
+            try
+            {
+                return Ok(await _service.Create(employee));
+            }
+            catch (ValidationException exception)
+            {
+                return ValidationProblem(exception.Message);
+            }
         }
 
         [Route("[controller]/update/")]

@@ -1,7 +1,5 @@
 import {
   Component,
-  ComponentFactoryResolver,
-  ElementRef,
   OnInit,
   QueryList,
   ViewChild,
@@ -9,57 +7,74 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import {CrudService} from '../../services/employees/crud.service';
-import {Employee} from "../../interfaces/Employee";
+import {Employee} from "../../interfaces";
 import {SortableDirective, SortEvent} from './sortable.directive';
+import {Observable} from "rxjs";
+import {FormControl, FormGroup} from "@angular/forms";
 
-
-const compare = (v1: string | number, v2: string | number) => v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
 
 @Component({
   selector: 'app-employees-table',
   templateUrl: './employees-table.component.html',
 })
 export class EmployeesTableComponent implements OnInit {
-  @ViewChild("alertPlaceholder") alertPlaceholder! : ViewContainerRef;
-
-  @ViewChildren(SortableDirective) headers!: QueryList<SortableDirective>;
-  Employees: Employee[] = [];
-  employees = this.Employees
 
   constructor(public crudService: CrudService) {
+    this.form.valueChanges.subscribe(text => {
+      this.Employees$.subscribe(employees => {
+        this.Employees = employees.filter(
+          employee => employee.fullName.toLowerCase().includes(text.fullName.toLowerCase())
+          && employee.department.toLowerCase().includes(text.department.toLowerCase())
+          && employee.salary >= text.salaryFrom && employee.salary <= text.salaryTo)
+      })
+    })
   }
+
+  Employees$!: Observable<Employee[]>;
+  Employees: Employee[] = [];
+  MaxSalary: number = 1000000;
+
+  form = new FormGroup({
+    fullName: new FormControl(''),
+    department: new FormControl(''),
+    salaryFrom: new FormControl(''),
+    salaryTo: new FormControl(this.MaxSalary),
+  })
+
+  @ViewChild('alertPlaceholder', { read: ViewContainerRef }) alertPlaceholder!: ViewContainerRef;
+  @ViewChildren(SortableDirective) headers!: QueryList<SortableDirective>;
+
 
   ngOnInit(): void {
     this.updateEmployees();
   }
 
-  createAlert(message: string, type: string) {
-
-  }
-
-  updateEmployees() {
-    return this.crudService.getEmployees().subscribe((res) => {
-      console.log(res)
-      this.Employees = res;
+  updateEmployees(orderBy?: string, direction?: string) {
+    this.Employees$ = this.crudService.getEmployees(orderBy, direction)
+    this.Employees$.subscribe(employees => {
+      this.Employees = employees;
+      this.MaxSalary = Math.max(...employees.map(employee => employee.salary))
     })
   }
-
   onSort({column, direction}: SortEvent) {
     this.headers.forEach(header => {
       if (header.sortable !== column) {
         header.direction = '';
       }
     })
-
-    if (direction === '' || column === '') {
-
+    if (direction !== '' && column !== '') {
+      this.updateEmployees(column, direction);
     } else {
-      this.Employees = [...this.Employees].sort((a, b) => {
-        const res = compare(a[column], b[column]);
-        return direction === 'asc' ? res : -res;
-      })
+      this.updateEmployees();
     }
   }
 
+
+
+
+/*  createMessage() {
+    const message = this.alertPlaceholder.createComponent(ErrorWasOccuredComponent,{});
+    setTimeout(() => { message.destroy() }, 2000)
+  }*/
 
 }

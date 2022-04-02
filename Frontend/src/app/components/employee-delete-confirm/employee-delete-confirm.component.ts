@@ -16,18 +16,17 @@ export class EmployeeDeleteConfirmComponent {
   }
 
   open(content: TemplateRef<any>) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', animation: true, backdrop: "static"}).result.then((result) => {
       if (result === 'ok') {
         this.deleteEmployee();
       }
     }, null);
+
   }
 
   deleteEmployee() {
     this.crudService.deleteEmployee(this.employee.id).subscribe({
-      complete: () => {
-        this.employeeDelete.emit();
-      }
+      complete: () => this.employeeDelete.emit()
     });
   }
 }

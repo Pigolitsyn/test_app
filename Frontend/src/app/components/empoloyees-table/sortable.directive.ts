@@ -3,7 +3,7 @@ import {Employee} from "src/app/interfaces/Employee";
 
 export type SortColumn = keyof Employee | '';
 export type SortDirection = 'asc' | 'desc' | '';
-const rotate: { [key: string]: SortDirection } = {'asc': 'desc', 'desc': 'asc', '': 'asc'};
+const rotate: { [key: string]: SortDirection } = { 'asc': 'desc', 'desc': '', '': 'asc' };
 
 export interface SortEvent {
   column: SortColumn;
@@ -20,7 +20,6 @@ export interface SortEvent {
 
 })
 export class SortableDirective {
-
   @Input() sortable: SortColumn = '';
   @Input() direction: SortDirection = '';
   @Output() sort = new EventEmitter<SortEvent>();

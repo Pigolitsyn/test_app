@@ -3,7 +3,7 @@ import {FormBuilder} from "@angular/forms";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import {CrudService} from '../../services/employees/crud.service';
-import {EmployeeDto} from "../../interfaces/Employee";
+import {EmployeeDto} from "../../interfaces";
 
 @Component({
   selector: 'app-employee-create-form',
@@ -36,7 +36,7 @@ export class EmployeeCreateFormComponent {
   }
 
   open(content: TemplateRef<any>) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', animation: true, backdrop: "static"}).result.then((result) => {
       if (result === 'ok') {
         this.onSubmit()
       }
