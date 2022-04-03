@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Output, TemplateRef} from '@angular/core';
-import {FormBuilder} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import {CrudService} from '../../services/employees/crud.service';
@@ -12,24 +12,33 @@ import {EmployeeDto} from "../../interfaces";
 export class EmployeeCreateFormComponent {
   @Output() userCreated: EventEmitter<void> = new EventEmitter;
 
-  employeeForm = this.formBuilder.group({
-    fullName: '',
-    salary: '',
-    birthDate: {
+  employeeForm = new FormGroup({
+    fullName: new FormControl('', [
+      Validators.required,
+    ]),
+    department: new FormControl('', [
+      Validators.required,
+    ]),
+    salary: new FormControl('', [
+      Validators.required,
+    ]),
+    birthDate: new FormControl({
       day: '',
       month: '',
       year: '',
-    },
-    hireDate: {
+    }, [
+      Validators.required,
+    ]),
+    hireDate: new FormControl({
       day: '',
       month: '',
       year: '',
-    },
-    department: '',
+    }, [
+      Validators.required,
+    ])
   })
 
   constructor(
-    private formBuilder: FormBuilder,
     private crudService: CrudService,
     private modalService: NgbModal,
   ) {
@@ -41,6 +50,7 @@ export class EmployeeCreateFormComponent {
         this.onSubmit()
       }
     }, null);
+    console.log(this.employeeForm.status)
   }
 
 
@@ -59,4 +69,8 @@ export class EmployeeCreateFormComponent {
     }, error: err => console.log(err)});
     this.employeeForm.reset();
   }
+
+  get fullName() { return this.employeeForm.get('fullName'); }
+  get department() { return this.employeeForm.get('department'); }
+  get salary() { return this.employeeForm.get('salary') }
 }
