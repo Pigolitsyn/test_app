@@ -11,7 +11,6 @@ export class CrudService {
 
   headersJson = new HttpHeaders()
     .set('content-type', 'application/json')
-    .set('Access-Control-Allow-Origin', '*')
   endpoint = 'https://localhost:5001';
 
   constructor(private httpClient: HttpClient) {
@@ -28,12 +27,12 @@ export class CrudService {
 
   createEmployee(employee: EmployeeDto): Observable<Employee> {
     return this.httpClient.post<Employee>(this.endpoint + "/employees/create",
-      employee, {'headers': this.headersJson})
+      employee)
   }
 
   updateEmployee(employee: Employee) {
     return this.httpClient.put<Employee>(this.endpoint + "/employees/update",
-      employee, {"headers": this.headersJson})
+      employee)
   }
 
 
@@ -45,10 +44,10 @@ export class CrudService {
   }
 
   deleteOlder() {
-    return this.httpClient.delete(this.endpoint + "/employees/deleteOlder?old=70")
+    return this.httpClient.delete(this.endpoint + "/employees/deleteOlder?old=70", )
   }
 
   makeAllHappy() {
-    return this.httpClient.post(this.endpoint + "/employees/makeallhappy", null)
+    return this.httpClient.post(this.endpoint + "/employees/makeallhappy", null, )
   }
 }

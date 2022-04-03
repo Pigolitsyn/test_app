@@ -7,5 +7,15 @@ services:
     ports:
       - "1433:1433"
     environment:
-      SA_PASSWORD: "change_this_password"
+      SA_PASSWORD: "35H~~31z=B"
       ACCEPT_EULA: "Y"
+      
+      
+  frontend-part:
+    container_name: frontend
+    build: ./Frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - sql-server-db
+      

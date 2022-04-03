@@ -23,6 +23,8 @@ namespace test_app
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+                options.AddDefaultPolicy(builder => builder.WithOrigins("http://localhost:8080", "https://localhost:8080").AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin()));
             services.AddMvc();
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("sql-server")));
@@ -35,6 +37,7 @@ namespace test_app
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors();
             app.UseStaticFiles();
             app.UseRouting();
             app.UseHttpsRedirection();
